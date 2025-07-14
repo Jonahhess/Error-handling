@@ -1,0 +1,89 @@
+Q
+Does using GitHub conflict resolution create a new temporary branch?
+
+Jonah
+	parse.js // validation.js
+	ui.js 		 // commandHandler.js
+
+Itai
+	contactService
+
+
+
+commandHandler - view
+contactService - model
+Contact.js - app.js - controller
+
+commandHandler.js
+printLoad()
+printSave()
+PrintError(err)
+
+ControllerError -> printError(error)
+
+parseAdd(args) {
+	const name = args[0]
+	const email = args[1]
+	if (!email.find(‘@‘)) {
+		throw err
+	}
+	return [name, email, phone];
+}
+
+
+app.js :
+Const op = process.argv[2];
+Const args = process.argv.slice(3)
+switch(op) {
+	case ‘add’ {
+		const [name, email, phone] = parseAdd(args); // touched
+		handleLoad(fileName);
+		handleAdd(name, email, phone);
+
+	case ‘delete’ {
+		handleDelete(args);
+}
+
+}
+
+handleAdd(args) {
+	try
+	const success = ContactService.add(name, email, phone)
+	catch	(error)
+if (success) {
+		ui.printAdd(name)
+	}
+}
+
+handleHelp() {
+	ui.help()
+}
+
+
+handleLoad(fileName) {
+Ui.printLoading()
+Try {	
+	const contacts = ContactService.load(fileName);
+	ui.printLoaded(contact.length)
+} catch (error) {
+	ui.printError(error)
+} }
+
+DB(contacts.json) <— Model  <—> controller <—> view
+
+Model: ContactService {
+#contactMap <email, obj> = new Map()
+Add (name, email, phone) -> success / fail O(1)
+Delete(email) -> success / fail O(1)
+List() -> [objects] O(n)
+Search(name) -> [objects] O(n) 
+Help()
+
+Save(obj, file): JSON.stringify(obj) (save) -> success
+Load(file)        : JSON.parse(contacts.json) -> [objects]
+
+}
+
+File Operations: load, save
+Error handling: file, command parsing
+Error recovery
