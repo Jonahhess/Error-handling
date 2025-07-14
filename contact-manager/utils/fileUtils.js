@@ -15,9 +15,16 @@ const AppendToFile = (fileName, data) => {
     // file written successfully
   } catch (err) {
     console.error(err);
-    throw errl;
+    throw err;
   }
 };
-const isExistingFile = (fileName) => 0;
-const createNewFile = (fileName) => 0;
-// const deleteFile = (fileName) => 0;
+
+const OverwriteFile = (fileName, data) => {
+  try {
+    fs.writeFileSync(fileName, data);
+    // file written successfully
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
