@@ -10,8 +10,26 @@ const parseAdd = (args) => {
   }
   return [name, email, phone];
 };
-const parseDelete = (args) => 0;
-const parseSearch = (args) => 0;
+const parseDelete = (args) => {
+  const [email] = args;
+  try {
+    validateEmail(email);
+  } catch (err) {
+    console.error("Could not parse arguments for delete function");
+    throw err;
+  }
+  return email;
+};
+const parseSearch = (args) => {
+  const [name] = args;
+  try {
+    validateName(name);
+  } catch (err) {
+    console.error("Could not parse arguments for search function");
+    throw err;
+  }
+  return name;
+};
 
 const validateName = (name) => {
   return true; // so far all names are true
