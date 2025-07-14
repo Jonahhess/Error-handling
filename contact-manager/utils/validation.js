@@ -47,16 +47,15 @@ const validateEmail = (email) => {
 };
 
 // internal fn
-const throwIfNotLength = (hasLength, num, errorMsg) => {
-  if (hasLength.length !== num) {
+const throwIfNotEqual = (a, b, errorMsg) => {
+  if (a !== b) {
     throw new Error(errorMsg);
   }
 };
 
 // internal fn
-const throwIfNotAllDigits = (string, errorMsg) => {
-  const onlyDigitsRegex = /^\d+$/;
-  if (!onlyDigitsRegex.test(string)) {
+const throwIfNaN = (string, errorMsg) => {
+  if (Number.isNaN(Number.parseInt(string))) {
     throw new Error(errorMsg);
   }
 };
@@ -65,13 +64,13 @@ const throwIfNotAllDigits = (string, errorMsg) => {
 const validatePhone = (phone) => {
   const errorMsg = "Invalid phone number";
 
-  throwIfNotLength(phone, 12, errorMsg);
+  throwIfNotEqual(phone.length, 12, errorMsg);
   const segmentsArray = phone.split("-");
-  throwIfNotLength(segmentsArray, 3, errorMsg);
+  throwIfNotEqual(segmentsArray.length, 3, errorMsg);
 
   for (let i = 0; i < segmentsArray.length; i++) {
     const segment = segmentsArray[i];
-    throwIfNotLength(segment, 3 + Number(i === 2), errorMsg); // lazy way of writing 3,3,4
+    throwIfNotEqual(segment.length, 3 + Number(i === 2), errorMsg); // lazy way of writing 3,3,4
     throwIfNotAllDigits(segment);
   }
 };
