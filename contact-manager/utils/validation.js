@@ -16,4 +16,4 @@ const validatePhone = (phone) => {
   return /^\d+$/.test(phone);
 };
 
-module.exports = {};
+module.exports = { parseAdd, parseDelete, parseSearch };
