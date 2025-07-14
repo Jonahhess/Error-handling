@@ -48,7 +48,9 @@ const validateEmail = (email) => {
 
 // internal fn
 const throwIfNotLength = (hasLength, num, errorMsg) => {
-  if (hasLength.length !== num) throw new Error(errorMsg);
+  if (hasLength.length !== num) {
+    throw new Error(errorMsg);
+  }
 };
 
 // internal fn
