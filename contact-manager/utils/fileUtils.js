@@ -6,6 +6,7 @@ const readFromFile = (fileName) => {
     return data;
   } catch (err) {
     console.error(err);
+    throw err;
   }
 };
 const AppendToFile = (fileName, data) => {
@@ -14,6 +15,7 @@ const AppendToFile = (fileName, data) => {
     // file written successfully
   } catch (err) {
     console.error(err);
+    throw errl;
   }
 };
 const isExistingFile = (fileName) => 0;
