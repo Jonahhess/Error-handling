@@ -71,7 +71,7 @@ const validatePhone = (phone) => {
   for (let i = 0; i < segmentsArray.length; i++) {
     const segment = segmentsArray[i];
     throwIfNotEqual(segment.length, 3 + Number(i === 2), errorMsg); // lazy way of writing 3,3,4
-    throwIfNotAllDigits(segment);
+    throwIfNaN(segment);
   }
 };
 
