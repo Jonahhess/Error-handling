@@ -1,7 +1,7 @@
 const parseAdd = (args) => {
   const [name, email, phone] = args;
   try {
-    validateName(name);
+    //validateName(name);
     validateEmail(email);
     validatePhone(phone);
   } catch (err) {
@@ -22,18 +22,18 @@ const parseDelete = (args) => {
 };
 const parseSearch = (args) => {
   const [name] = args;
-  try {
-    validateName(name);
-  } catch (err) {
-    console.error("Could not parse arguments for search function");
-    throw err;
-  }
+  //   try {
+  //     validateName(name);
+  //   } catch (err) {
+  //     console.error("Could not parse arguments for search function");
+  //     throw err;
+  //   }
   return name;
 };
 
-const validateName = (name) => {
-  return true; // so far all names are true
-};
+// const validateName = (name) => {
+//   return true; // so far all names are true
+// };
 
 const validateEmail = (email) => {
   const validEmail = email.match(
