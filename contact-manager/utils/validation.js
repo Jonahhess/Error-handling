@@ -1,7 +1,7 @@
 const parseAdd = (args) => {
   const [name, email, phone] = args;
   try {
-    //validateName(name);
+    validateName(name);
     validateEmail(email);
     validatePhone(phone);
   } catch (err) {
@@ -22,18 +22,20 @@ const parseDelete = (args) => {
 };
 const parseSearch = (args) => {
   const [name] = args;
-  //   try {
-  //     validateName(name);
-  //   } catch (err) {
-  //     console.error("Could not parse arguments for search function");
-  //     throw err;
-  //   }
+  try {
+    validateName(name);
+  } catch (err) {
+    console.error("Could not parse arguments for search function");
+    throw err;
+  }
   return name;
 };
 
-// const validateName = (name) => {
-//   return true; // so far all names are true
-// };
+const validateName = (name) => {
+  if (!name) {
+    throw new Error("Invalid name");
+  }
+};
 
 const validateEmail = (email) => {
   const validEmail = email.match(
@@ -42,16 +44,35 @@ const validateEmail = (email) => {
   if (!validEmail) {
     throw new Error("Invalid email");
   }
-
-  return validEmail;
 };
 
-const validatePhone = (phone) => {
-  const validPhone = /^\d+$/.test(phone);
-  if (!validPhone) {
-    throw new Error("Invalid Phone Number");
+// internal fn
+const throwIfNotEqual = (a, b, errorMsg) => {
+  if (a !== b) {
+    throw new Error(errorMsg);
   }
-  return validPhone;
+};
+
+// internal fn
+const throwIfNaN = (string, errorMsg) => {
+  if (Number.isNaN(Number.parseInt(string))) {
+    throw new Error(errorMsg);
+  }
+};
+
+// for now, only accepts phone inputs of the form 555-123-4567
+const validatePhone = (phone) => {
+  const errorMsg = "Invalid phone number";
+
+  throwIfNotEqual(phone.length, 12, errorMsg);
+  const segmentsArray = phone.split("-");
+  throwIfNotEqual(segmentsArray.length, 3, errorMsg);
+
+  for (let i = 0; i < segmentsArray.length; i++) {
+    const segment = segmentsArray[i];
+    throwIfNotEqual(segment.length, 3 + Number(i === 2), errorMsg); // lazy way of writing 3,3,4
+    throwIfNaN(segment);
+  }
 };
 
 module.exports = { parseAdd, parseDelete, parseSearch };
