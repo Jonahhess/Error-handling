@@ -28,3 +28,5 @@ const OverwriteFile = (fileName, data) => {
     throw err;
   }
 };
+
+module.exports = { readFromFile, AppendToFile, OverwriteFile };
