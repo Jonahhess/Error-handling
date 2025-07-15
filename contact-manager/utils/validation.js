@@ -1,38 +1,5 @@
 const { throwIfNotEqual, throwIfNaN } = require("./throws");
 
-const parseAdd = (args) => {
-  const [name, email, phone] = args;
-  try {
-    validateName(name);
-    validateEmail(email);
-    validatePhone(phone);
-  } catch (err) {
-    console.error("Could not parse arguments for add function");
-    throw err;
-  }
-  return [name, email, phone];
-};
-const parseDelete = (args) => {
-  const [email] = args;
-  try {
-    validateEmail(email);
-  } catch (err) {
-    console.error("Could not parse arguments for delete function");
-    throw err;
-  }
-  return email;
-};
-const parseSearch = (args) => {
-  const [query] = args;
-  try {
-    validateQuery(query);
-  } catch (err) {
-    console.error("Could not parse arguments for search function");
-    throw err;
-  }
-  return query;
-};
-
 const validateName = (name) => {
   if (!name) {
     throw new Error("Invalid name");
@@ -67,6 +34,39 @@ const validateQuery = (query) => {
   if (!query || /^.*?(?=[\^#%&$\*:<>\?/\{\|\}]).*$/.test(query)) {
     throw new Error("Invalid name");
   }
+};
+
+const parseAdd = (args) => {
+  const [name, email, phone] = args;
+  try {
+    validateName(name);
+    validateEmail(email);
+    validatePhone(phone);
+  } catch (err) {
+    console.error("Could not parse arguments for add function");
+    throw err;
+  }
+  return [name, email, phone];
+};
+const parseDelete = (args) => {
+  const [email] = args;
+  try {
+    validateEmail(email);
+  } catch (err) {
+    console.error("Could not parse arguments for delete function");
+    throw err;
+  }
+  return email;
+};
+const parseSearch = (args) => {
+  const [query] = args;
+  try {
+    validateQuery(query);
+  } catch (err) {
+    console.error("Could not parse arguments for search function");
+    throw err;
+  }
+  return query;
 };
 
 module.exports = { parseAdd, parseDelete, parseSearch };
