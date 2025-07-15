@@ -42,6 +42,11 @@ try {
       printSearch(contacts);
       break;
     }
+    case "list": {
+      const contacts = handleLoad(FILENAME);
+      view.printList(contacts);
+      break;
+    }
     case "help": {
       view.printHelp();
       break;
