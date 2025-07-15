@@ -15,6 +15,7 @@ Examples:
 `);
 };
 
+// replace with throw error from within validate email
 const printInvalidEmail = () =>
   console.log("✗ Error: Email must contain @ symbol");
 
