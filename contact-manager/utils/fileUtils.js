@@ -9,7 +9,7 @@ const readFromFile = (fileName) => {
     throw err;
   }
 };
-const AppendToFile = (fileName, data) => {
+const appendToFile = (fileName, data) => {
   try {
     fs.writeFileSync(fileName, data, { flag: "a" });
     // file written successfully
@@ -19,7 +19,7 @@ const AppendToFile = (fileName, data) => {
   }
 };
 
-const OverwriteFile = (fileName, data) => {
+const overwriteFile = (fileName, data) => {
   try {
     fs.writeFileSync(fileName, data);
     // file written successfully
@@ -29,4 +29,4 @@ const OverwriteFile = (fileName, data) => {
   }
 };
 
-module.exports = { readFromFile, AppendToFile, OverwriteFile };
+module.exports = { readFromFile, appendToFile, overwriteFile };
