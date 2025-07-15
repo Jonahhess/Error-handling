@@ -15,7 +15,7 @@ const validateEmail = (email) => {
 
 // for now, only accepts phone inputs of the form 555-123-4567
 const validatePhone = (phone) => {
-  if (/d{3}-d{3}-d{4}/.test(phone)) {
+  if (!/^\d{3}-\d{3}-\d{4}$/.test(phone)) {
     throw new Error("Invalid phone number");
   }
 };
