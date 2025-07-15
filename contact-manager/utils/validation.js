@@ -1,3 +1,5 @@
+const { throwIfNotEqual, throwIfNaN } = require("./throws");
+
 const parseAdd = (args) => {
   const [name, email, phone] = args;
   try {
@@ -43,20 +45,6 @@ const validateEmail = (email) => {
   );
   if (!validEmail) {
     throw new Error("Invalid email");
-  }
-};
-
-// internal fn
-const throwIfNotEqual = (a, b, errorMsg) => {
-  if (a !== b) {
-    throw new Error(errorMsg);
-  }
-};
-
-// internal fn
-const throwIfNaN = (string, errorMsg) => {
-  if (Number.isNaN(Number.parseInt(string))) {
-    throw new Error(errorMsg);
   }
 };
 
