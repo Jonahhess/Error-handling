@@ -88,6 +88,7 @@ function handleLoad(FILENAME) {
     view.printLoaded(data.length);
   } catch (error) {
     console.error(error);
+    view.printFileNotFound();
     model.createFile(FILENAME); // instead of throwing, we gracefully correct the program
   }
   return parsedData;
