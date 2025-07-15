@@ -60,23 +60,6 @@ const printNoEmailFound = (email) =>
 
 const printEmailTaken = () =>
   console.log("✗ Error: Contact with this email already exists");
-
-const printInvalidCommand = (command) =>
-  console.log(`✗ Error: Unknown command '${command}'
-Usage: node contacts.js [add|list|search|delete|help] `);
-
-const printMissingAddArgs = () =>
-  console.log(`✗ Error: Missing arguments for add command
-Usage: node contacts.js add "name" "email" "phone"`);
-
-const printMissingDeleteArgs = () =>
-  console.log(`✗ Error: Missing arguments for delete command
-Usage: node contacts.js delete "email"`);
-
-const printMissingSearchArgs = () =>
-  console.log(`✗ Error: Missing arguments for delete command
-Usage: node contacts.js search "name"`);
-
 const printDeleted = (deletedName) =>
   console.log(`✓ Contact deleted: ${deletedName}`);
 
@@ -94,10 +77,6 @@ module.exports = {
   printSearch,
   printNoEmailFound,
   printEmailTaken,
-  printInvalidCommand,
-  printMissingAddArgs,
-  printMissingDeleteArgs,
-  printMissingSearchArgs,
   printDeleted,
   printError,
 };
