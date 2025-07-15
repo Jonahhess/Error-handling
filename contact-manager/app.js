@@ -1,75 +1,103 @@
 import parser from "./utils/validation";
-import view from "./commands/commandHandler";
+import view, { printList } from "./commands/commandHandler";
 import model from "./services/contactService";
-import jsonUtil from "./utils/jsonUtils";
+import { throwIfLessThan } from "./utils/throws";
 
 const FILENAME = "../DB/contacts.json";
 const command = process.argv[2];
 const args = process.argv.slice(3);
 
-switch (command) {
-  case "add": {
-    try {
-      const json = model.load(FILENAME);
-      const parsedData = jsonUtil.JSONToObjectArray(json);
+try {
+  switch (command) {
+    case "add": {
+      const missingArgsMessage = `Missing arguments for add command\nUsage: node contacts.js add "name" "email" "phone"`;
+      throwIfLessThan(args.length, 3, missingArgsMessage);
+
+      const parsedData = handleLoad(FILENAME);
       const [name, email, phone] = parser.parseAdd(args);
-      handleAdd(name, email, phone, parsedData);
-    } catch (err) {
-      switch (err._) {
-        case "name": {
-          view.printInvalidName();
-          break;
-        }
-        case "email": {
-          view.printInvalidEmail();
-          break;
-        }
-        case "phone": {
-          view.printInvalidPhone();
-          break;
-        }
-      }
+
+      const updatedData = handleAdd(name, email, phone, parsedData);
+      handleSave(updatedData);
+      break;
     }
-    break;
+    case "delete": {
+      const missingArgsMessage = `Missing arguments for delete command\nUsage: node contacts.js delete "email"`;
+      throwIfLessThan(args.length, 1, missingArgsMessage);
+
+      const parsedData = handleLoad(FILENAME);
+      const email = parser.parseDelete(args);
+
+      const updatedData = handleDelete(email, parsedData);
+      handleSave(updatedData);
+      break;
+    }
+    case "search": {
+      const missingArgsMessage = `Missing arguments for delete command\nUsage: node contacts.js search "name"`;
+      throwIfLessThan(args.length, 1, missingArgsMessage);
+
+      const parsedData = handleLoad(FILENAME);
+      const query = parser.parseSearch(args);
+
+      const contacts = handleSearch(query, parsedData);
+      printList(contacts);
+      break;
+    }
+    case "help": {
+      view.printHelp();
+      break;
+    }
+    default: {
+      const invalidCommandMessage = `Unknown command '${command}'\nUsage: node contacts.js [add|list|search|delete|help]`;
+      throw new Error(invalidCommandMessage);
+    }
   }
-  case "delete": {
-    handleDelete(args);
-  }
+} catch (error) {
+  view.printError(error);
 }
 
 function handleAdd(name, email, phone) {
   try {
-    view.printLoading();
-    const success = model.add(name, email, phone);
+    const updatedData = model.add(name, email, phone);
+    return updatedData;
   } catch (error) {
-    if (error.message === "cannot open file") {
-      view.printFileNotFound();
-    }
-  }
-  if (success) {
-    view.printAdd(name);
+    view.printError(error);
   }
 }
 
 function handleDelete(email) {
   try {
-    const success = model.delete(email);
-  } catch (err) {
-    view.printNoEmailFound();
+    const [updatedData, deletedName] = model.delete(email);
+    view.printDeleted(deletedName);
+    return updatedData;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 }
 
-function handleHelp() {
-  view.help();
+function handleSearch(query, parsedData) {
+  const contacts = model.search(query, parsedData);
+  return contacts;
 }
 
 function handleLoad(FILENAME) {
-  let data;
+  view.printLoading();
+  let parsedData;
   try {
-    data = model.load(FILENAME);
+    parsedData = model.load(FILENAME);
     view.printLoaded(data.length);
   } catch (error) {
+    console.error(error);
+    model.createFile(FILENAME); // instead of throwing, we gracefully correct the program
+  }
+  return parsedData;
+}
+
+function handleSave(updatedData) {
+  try {
+    model.save(updatedData);
+    view.printSaved();
+  } catch (error) {
     view.printError(error);
-    data = [];
   }
 }
