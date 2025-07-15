@@ -77,6 +77,11 @@ const printMissingSearchArgs = () =>
   console.log(`✗ Error: Missing arguments for delete command
 Usage: node contacts.js search "name"`);
 
+const printDeleted = (deletedName) =>
+  console.log(`✓ Contact deleted: ${deletedName}`);
+
+const printError = (error) => console.log(`✗ Error: ${error.message}`);
+
 module.exports = {
   printHelp,
   printInvalidEmail,
@@ -93,4 +98,6 @@ module.exports = {
   printMissingAddArgs,
   printMissingDeleteArgs,
   printMissingSearchArgs,
+  printDeleted,
+  printError,
 };
