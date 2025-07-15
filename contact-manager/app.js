@@ -58,6 +58,7 @@ try {
 function handleAdd(name, email, phone) {
   try {
     const updatedData = model.add(name, email, phone);
+    view.printAdded(name);
     return updatedData;
   } catch (error) {
     view.printError(error);
