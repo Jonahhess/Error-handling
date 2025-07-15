@@ -10,4 +10,10 @@ const throwIfNaN = (number, errorMsg) => {
   }
 };
 
-module.exports = { throwIfNotEqual, throwIfNaN };
+const throwIfLessThan = (a, b, errorMsg) => {
+  if (a < b) {
+    throw new Error(errorMsg);
+  }
+};
+
+module.exports = { throwIfNotEqual, throwIfNaN, throwIfLessThan };
