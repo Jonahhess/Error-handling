@@ -4,8 +4,8 @@ const throwIfNotEqual = (a, b, errorMsg) => {
   }
 };
 
-const throwIfNaN = (string, errorMsg) => {
-  if (Number.isNaN(Number.parseInt(string))) {
+const throwIfNaN = (number, errorMsg) => {
+  if (Number.isNaN(number)) {
     throw new Error(errorMsg);
   }
 };
