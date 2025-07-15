@@ -41,13 +41,20 @@ const printContacts = (contacts) => {
   }
 };
 
+// helper function
+const createTitle = (title) => {
+  return `=== ${title} ===`;
+};
+
 const printList = (contacts) => {
-  console.log("=== All Contacts ===");
+  const title = "All Contacts";
+  console.log(createTitle(title));
   printContacts(contacts);
 };
 
 const printSearch = (query, contacts) => {
-  console.log(`=== Search Results for "${query}" ===`);
+  const title = `Search Results for "${query}"`;
+  console.log(createTitle(title));
   if (contacts) {
     printContacts(contacts);
   } else {
