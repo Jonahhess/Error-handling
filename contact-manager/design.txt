@@ -72,7 +72,7 @@ Try {
 DB(contacts.json) <— Model  <—> controller <—> view
 
 Model: ContactService {
-#contactMap <email, obj> = new Map()
+#contactMap <email, obj> = new Map() - json can't save Map structures
 Add (name, email, phone) -> success / fail O(1)
 Delete(email) -> success / fail O(1)
 List() -> [objects] O(n)
