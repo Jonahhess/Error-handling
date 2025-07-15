@@ -1,48 +1,36 @@
-import fs from 'fs';
-
+const filesUtils = require('../utils/fileUtils');
+const contactsUtils = require('../utils/contactsUtils');
 class ContactService {
 
-    controller() {
+    // !!!!!!! send to add and delete the db file-name or save in this file
 
-    }
-
-    dbAddress = '../DB/contacts.json';
-
-    // error handling:
-    // 1. no file found - create a new one with empty arr and return a notice
-    // 2. file found but empty - return empty arr
-    load() {
-        const data = fs.readFileSync(this.dbAddress); // add try catch for reading the file
-        return JSON.parse(data);
-        // if no file found - throw error and return create new empty arr
+    load(fileName) {
+        const json = fs.readFileSync(fileName); // add try catch for reading the file
+        return json
     }
 
     // error handling:
     // 1. handle empty arr
     // 2. handle writing to the file went wrong
-    add(argsArr) {
-        const contactsData = this.load();
-        const contactsMap = this.#convertDataToMap(contactsData);
-        const [name, email, phone] = argsArr; // add input validation
-        if(contactsMap.has(email)) return "Error: Contact with this email already exists";
+    add(name, email, phone, parsedData, fileName) {
+        const contactsMap = contactsUtils.objectArrayToMap(parsedData);
+        if (contactsMap.has(email)) return "Error: Contact with this email already exists";
         const newContact = { name, email, phone }
-        contactsData.push(newContact);
-        this.#writeUpdatedFileSync(contactsData); // add try catch for successful writing
+        parsedData.push(newContact);
+        filesUtils.overwriteFile(fileName, parsedData); // add try catch for successful writing
         return name;// on success - return contact name and contacts length
     }
 
     // error handling:
     // 1. handle writing to the file went wrong
-    delete(email) {
-        let contactsData = this.load();
-        let contactsMap = this.#convertDataToMap(contactsData);
+    delete(email, parsedData, fileName) {
+        let contactsMap = contactsUtils.objectArrayToMap(parsedData);
         const contactToDelete = contactsMap.get(email);
         if (!contactToDelete) {
             return console.log("Error: No contact found with email: " + email); //throw error
         }
-        const deleted = contactsMap.delete(email);
-        contactsData = this.#convertMapToArr(contactsMap);
-        this.#writeUpdatedFileSync(contactsData); // try catch
+        const updatedData = contactsUtils.mapToObjectArray(contactsMap);
+        filesUtils.overwriteFile(fileName, updatedData); // try catch
         return contactToDelete.name; // on success - return contact name and contacts length
     }
 
@@ -51,39 +39,10 @@ class ContactService {
         return contacts;
     }
 
-    search(name) {
-        const contacts = this.load();
-        const contactsByName = this.#findContactsByName(contacts, name);
+    search(name, contacts) {
+        const contactsByName = contactsUtils.findAllContactsByName(contacts, name);
         return contactsByName;
     }
-
-    #convertDataToMap(contacts) {
-        const contactsMap = new Map();
-        if (contacts.length === 0) return contactsMap;
-        contacts.forEach(contact => {
-            contactsMap.set(contact.email, contact);
-        });
-        return contactsMap;
-    }
-
-    #convertMapToArr(map) {
-        return Array.from(map.values());
-    }
-
-    #writeUpdatedFileSync(dataArr) {
-        fs.writeFileSync(this.dbAddress, JSON.stringify(dataArr), 'utf8');
-    }
-
-    #findContactsByName(contacts, searchName) {
-        return contacts.filter(c => {
-            searchName = searchName.toLowerCase();
-            const contactName = c.name.toLowerCase();
-            const [contactFirstName, contactLastName] = contactName.split(" ");
-            return ([contactName, contactFirstName, contactLastName].includes(searchName));
-        });
-    }
-
-
 
 }
 const contactService = new ContactService()
