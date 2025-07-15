@@ -21,14 +21,14 @@ const parseDelete = (args) => {
   return email;
 };
 const parseSearch = (args) => {
-  const [name] = args;
+  const [query] = args;
   try {
-    validateName(name);
+    validateQuery(query);
   } catch (err) {
     console.error("Could not parse arguments for search function");
     throw err;
   }
-  return name;
+  return query;
 };
 
 const validateName = (name) => {
@@ -72,6 +72,12 @@ const validatePhone = (phone) => {
     const segment = segmentsArray[i];
     throwIfNotEqual(segment.length, 3 + Number(i === 2), errorMsg); // lazy way of writing 3,3,4
     throwIfNaN(segment);
+  }
+};
+
+const validateQuery = (query) => {
+  if (!query || /^.*?(?=[\^#%&$\*:<>\?/\{\|\}]).*$/.test(query)) {
+    throw new Error("Invalid name");
   }
 };
 
