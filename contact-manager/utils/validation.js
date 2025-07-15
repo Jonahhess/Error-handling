@@ -1,5 +1,3 @@
-const { throwIfNotEqual, throwIfNaN } = require("./throws");
-
 const validateName = (name) => {
   if (!name) {
     throw new Error("Invalid name");
@@ -17,16 +15,8 @@ const validateEmail = (email) => {
 
 // for now, only accepts phone inputs of the form 555-123-4567
 const validatePhone = (phone) => {
-  const errorMsg = "Invalid phone number";
-
-  throwIfNotEqual(phone.length, 12, errorMsg);
-  const segmentsArray = phone.split("-");
-  throwIfNotEqual(segmentsArray.length, 3, errorMsg);
-
-  for (let i = 0; i < segmentsArray.length; i++) {
-    const segment = segmentsArray[i];
-    throwIfNotEqual(segment.length, 3 + Number(i === 2), errorMsg); // lazy way of writing 3,3,4
-    throwIfNaN(Number.parseInt(segment));
+  if (/d{3}-d{3}-d{4}/.test(phone)) {
+    throw new Error("Invalid phone number");
   }
 };
 
