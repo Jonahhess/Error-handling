@@ -1,37 +1,44 @@
 const filesUtils = require('../utils/fileUtils');
+const jsonUtils = require('../utils/jsonUtils');
 const contactsUtils = require('../utils/contactsUtils');
+const fs = require('node:fs');
 class ContactService {
 
     // !!!!!!! send to add and delete the db file-name or save in this file
 
     load(fileName) {
-        const json = fs.readFileSync(fileName); // add try catch for reading the file
-        return json
+        const json = filesUtils.readFromFile(fileName);
+        if (!json) filesUtils.overwriteFile(fileName, '[]');
+        const parsedData = jsonUtils.JSONToObjectArray(json || '[]');
+        return { parsedData, createdNewArr: !!json };
+    }
+
+    save(fileName, parsedData) {
+        const json = jsonUtils.ObjectArrayToJSON(parsedData);
+        filesUtils.overwriteFile(fileName, json);
     }
 
     // error handling:
     // 1. handle empty arr
     // 2. handle writing to the file went wrong
-    add(name, email, phone, parsedData, fileName) {
+    add(name, email, phone, parsedData) {
         const contactsMap = contactsUtils.objectArrayToMap(parsedData);
-        if (contactsMap.has(email)) return "Error: Contact with this email already exists";
+        if (contactsMap.has(email))
+            throw new Error("✗ Error: Contact with this email already exists");
         const newContact = { name, email, phone }
         parsedData.push(newContact);
-        filesUtils.overwriteFile(fileName, parsedData); // add try catch for successful writing
-        return name;// on success - return contact name and contacts length
+        return [name, parsedData];
     }
 
     // error handling:
     // 1. handle writing to the file went wrong
-    delete(email, parsedData, fileName) {
+    delete(email, parsedData) {
         let contactsMap = contactsUtils.objectArrayToMap(parsedData);
         const contactToDelete = contactsMap.get(email);
-        if (!contactToDelete) {
-            return console.log("Error: No contact found with email: " + email); //throw error
-        }
+        if (!contactToDelete)
+             throw new Error("✗ Error: No contact found with email: " + email);
         const updatedData = contactsUtils.mapToObjectArray(contactsMap);
-        filesUtils.overwriteFile(fileName, updatedData); // try catch
-        return contactToDelete.name; // on success - return contact name and contacts length
+        return [contactToDelete.name, updatedData]; // on success - return contact name and contacts length
     }
 
     list() {
@@ -46,11 +53,14 @@ class ContactService {
 
 }
 const contactService = new ContactService()
-let contact = ['jonah hess', 'aaa', '123345'];
-let res = contactService.add(contact);
-console.log(res);
-console.log(contactService.list());
-console.log(contactService.search('glikm'));
+
+const data = contactService.load();
+
+// let contact = ['jonah hess', 'aaa', '123345'];
+// let res = contactService.add(contact);
+// console.log(res);
+// console.log(contactService.list());
+// console.log(contactService.search('glikm'));
 // let deleted = contactService.delete('aaa');
 // console.log(deleted);
 
