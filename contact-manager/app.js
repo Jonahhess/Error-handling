@@ -3,8 +3,8 @@ import view from "./commands/commandHandler";
 import ContactService from "./services/contactService";
 import { throwIfLessThan } from "./utils/throws";
 
-const FILENAME = "../DB/contacts.json";
-const model = new ContactService(FILENAME);
+const PATH = "../DB/contacts.json";
+const model = new ContactService(PATH);
 
 const command = process.argv[2];
 const args = process.argv.slice(3);
