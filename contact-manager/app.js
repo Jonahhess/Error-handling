@@ -1,5 +1,5 @@
 import parser from "./utils/validation";
-import view, { printList, printSearch } from "./commands/commandHandler";
+import view from "./commands/commandHandler";
 import model from "./services/contactService";
 import { throwIfLessThan } from "./utils/throws";
 
@@ -39,7 +39,7 @@ try {
       const query = parser.parseSearch(args);
 
       const contacts = handleSearch(query, parsedData);
-      printSearch(contacts);
+      view.printSearch(contacts);
       break;
     }
     case "list": {
