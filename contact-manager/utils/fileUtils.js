@@ -1,9 +1,10 @@
 const fs = require("node:fs");
+const PATH = "../DB/contacts.json";
 
-const readFromFile = (fileName) => {
+const readFromFile = () => {
     let data;
     try {
-        data = fs.readFileSync(fileName, "utf8");
+        data = fs.readFileSync(PATH, "utf8");
     } catch (err) {
         // if file not found - create a new empty one
         console.error(err);
@@ -12,9 +13,9 @@ const readFromFile = (fileName) => {
 }
 
 
-const appendToFile = (fileName, data) => {
+const appendToFile = (data) => {
     try {
-        fs.writeFileSync(fileName, data, { flag: "a" });
+        fs.writeFileSync(PATH, data, { flag: "a" });
         // file written successfully
     } catch (err) {
         console.error(err);
@@ -22,9 +23,9 @@ const appendToFile = (fileName, data) => {
     }
 };
 
-const overwriteFile = (fileName, data) => {
+const overwriteFile = (data) => {
     try {
-        fs.writeFileSync(fileName, data);
+        fs.writeFileSync(PATH, data);
         // file written successfully
     } catch (err) {
         console.error(err);
