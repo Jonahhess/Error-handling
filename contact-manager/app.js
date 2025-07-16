@@ -1,7 +1,6 @@
 import parser from "./utils/validation.js";
 import throws from "./utils/throws.js";
-import CommandService from './services/commandService.js';
-import commandService from "./services/commandService.js";
+import CommandService from "./services/commandService.js";
 
 const command = process.argv[2];
 const args = process.argv.slice(3);
@@ -15,8 +14,16 @@ try {
       const parsedData = CommandService.handleLoad();
       const [name, email, phone] = parser.parseAdd(args);
 
-      const updatedData = CommandService.handleAdd(name, email, phone, parsedData);
-      CommandService.handleSave(updatedData);
+      const updatedData = CommandService.handleAdd(
+        name,
+        email,
+        phone,
+        parsedData
+      );
+
+      if (updatedData) {
+        CommandService.handleSave(updatedData);
+      }
       break;
     }
     case "delete": {
@@ -26,8 +33,13 @@ try {
       const parsedData = CommandService.handleLoad();
       const email = parser.parseDelete(args);
 
-      const updatedData = CommandService.handleDelete(email, parsedData);
-      CommandService.handleSave(updatedData);
+      const [updatedData, deletedName] = CommandService.handleDelete(
+        email,
+        parsedData
+      );
+      if (deletedName) {
+        CommandService.handleSave(updatedData);
+      }
       break;
     }
     case "search": {
@@ -54,5 +66,5 @@ try {
     }
   }
 } catch (error) {
-  commandService.handleError(error);
+  CommandService.handleError(error);
 }

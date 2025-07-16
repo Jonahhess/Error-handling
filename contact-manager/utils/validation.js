@@ -36,7 +36,7 @@ const parseAdd = (args) => {
     console.error("Could not parse arguments for add function");
     throw err;
   }
-  return [name, email, phone];
+  return [name.toLowerCase(), email.toLowerCase(), phone];
 };
 const parseDelete = (args) => {
   const [email] = args;
@@ -46,7 +46,7 @@ const parseDelete = (args) => {
     console.error("Could not parse arguments for delete function");
     throw err;
   }
-  return email;
+  return email.toLowerCase();
 };
 const parseSearch = (args) => {
   const [query] = args;
@@ -56,7 +56,7 @@ const parseSearch = (args) => {
     console.error("Could not parse arguments for search function");
     throw err;
   }
-  return query;
+  return query.toLowerCase();
 };
 
 export default { parseAdd, parseDelete, parseSearch };

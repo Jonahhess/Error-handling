@@ -1,76 +1,75 @@
-import ContactService from './contactService.js';
+import ContactService from "./contactService.js";
 import view from "../commands/commandHandler.js";
 
-function handleAdd(name, email, phone) {
-    try {
-        const updatedData = ContactService.add(name, email, phone);
-        view.printAdded(name);
-        return updatedData;
-    } catch (error) {
-        view.printError(error);
-    }
+function handleAdd(name, email, phone, parsedData) {
+  try {
+    const updatedData = ContactService.add(name, email, phone, parsedData);
+    view.printAdded(name);
+    return updatedData;
+  } catch (error) {
+    view.printError(error);
+  }
 }
 
-function handleDelete(email) {
-    try {
-        const [updatedData, deletedName] = ContactService.deleteContact(email);
-        view.printDeleted(deletedName);
-        return updatedData;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+function handleDelete(email, parsedData) {
+  const [updatedData, deletedName] = ContactService.deleteContact(
+    email,
+    parsedData
+  );
+
+  if (!deletedName) {
+    view.printNoEmailFound(email);
+  } else {
+    view.printDeleted(deletedName);
+  }
+  return [updatedData, deletedName];
 }
 
 function handleSearch(query, parsedData) {
-    const contacts = ContactService.search(query, parsedData);
-    view.printSearch(contacts);
+  const contacts = ContactService.search(query, parsedData);
+  view.printSearch(query, contacts);
 }
 
 function handleLoad() {
-    view.printLoading();
-    let parsedData;
-    try {
-        parsedData = ContactService.load();
-        view.printLoaded(data.length);
-    } catch (error) {
-        console.log("here");
-        console.error(error);
-        view.printFileNotFound();
-        ContactService.createFile(); // instead of throwing, we gracefully correct the program
-        parsedData = [];
-    }
-    return parsedData;
+  view.printLoading();
+  const { parsedData, createdNewArray } = ContactService.load();
+
+  if (createdNewArray) {
+    view.printFileNotFound();
+  } else {
+    view.printLoaded(parsedData.length);
+  }
+  return parsedData;
 }
 
 function handleSave(updatedData) {
-    try {
-        ContactService.save(updatedData);
-        view.printSaved();
-    } catch (error) {
-        view.printError(error);
-    }
+  try {
+    ContactService.save(updatedData);
+    view.printSaved();
+  } catch (error) {
+    view.printError(error);
+  }
 }
 
 function handleList(contacts) {
-    view.printList(contacts);
+  view.printList(contacts);
 }
 
 function handleHelp() {
-    view.printHelp();
+  view.printHelp();
 }
 
 function handleError(error) {
-    view.printError(error);
+  view.printError(error);
 }
 
-export default  {
-    handleAdd,
-    handleDelete,
-    handleSearch,
-    handleLoad,
-    handleSave,
-    handleList,
-    handleHelp,
-    handleError,
+export default {
+  handleAdd,
+  handleDelete,
+  handleSearch,
+  handleLoad,
+  handleSave,
+  handleList,
+  handleHelp,
+  handleError,
 };
