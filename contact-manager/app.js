@@ -1,7 +1,6 @@
 import parser from "./utils/validation.js";
 import throws from "./utils/throws.js";
-import CommandService from './services/commandService.js';
-import commandService from "./services/commandService.js";
+import CommandService from "./services/commandService.js";
 
 const command = process.argv[2];
 const args = process.argv.slice(3);
@@ -15,7 +14,12 @@ try {
       const parsedData = CommandService.handleLoad();
       const [name, email, phone] = parser.parseAdd(args);
 
-      const updatedData = CommandService.handleAdd(name, email, phone, parsedData);
+      const updatedData = CommandService.handleAdd(
+        name,
+        email,
+        phone,
+        parsedData
+      );
       CommandService.handleSave(updatedData);
       break;
     }
@@ -54,5 +58,5 @@ try {
     }
   }
 } catch (error) {
-  commandService.handleError(error);
+  CommandService.handleError(error);
 }
