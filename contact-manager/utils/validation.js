@@ -59,4 +59,4 @@ const parseSearch = (args) => {
   return query;
 };
 
-module.exports = { parseAdd, parseDelete, parseSearch };
+export default { parseAdd, parseDelete, parseSearch };

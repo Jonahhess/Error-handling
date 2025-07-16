@@ -66,7 +66,7 @@ const printDeleted = (deletedName) =>
 
 const printError = (error) => console.log(`✗ Error: ${error.message}`);
 
-module.exports = {
+export default {
   printHelp,
   printInvalidEmail,
   printLoading,
