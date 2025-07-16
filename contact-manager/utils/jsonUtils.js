@@ -17,4 +17,4 @@ const ObjectArrayToJSON = (objectArray) => {
   }
 };
 
-module.exports = { JSONToObjectArray, ObjectArrayToJSON };
+export default { JSONToObjectArray, ObjectArrayToJSON };
