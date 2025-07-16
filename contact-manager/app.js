@@ -1,11 +1,7 @@
-import parser from "./utils/validation";
-import view from "./commands/commandHandler";
-import ContactService from "./services/contactService";
-import { throwIfLessThan } from "./utils/throws";
-import CommandService from './services/commandService';
-
-const PATH = "../DB/contacts.json";
-const model = new ContactService(PATH);
+import parser from "./utils/validation.js";
+import throws from "./utils/throws.js";
+import CommandService from './services/commandService.js';
+import commandService from "./services/commandService.js";
 
 const command = process.argv[2];
 const args = process.argv.slice(3);
@@ -14,7 +10,7 @@ try {
   switch (command) {
     case "add": {
       const missingArgsMessage = `Missing arguments for add command\nUsage: node contacts.js add "name" "email" "phone"`;
-      throwIfLessThan(args.length, 3, missingArgsMessage);
+      throws.throwIfLessThan(args.length, 3, missingArgsMessage);
 
       const parsedData = CommandService.handleLoad();
       const [name, email, phone] = parser.parseAdd(args);
@@ -25,7 +21,7 @@ try {
     }
     case "delete": {
       const missingArgsMessage = `Missing arguments for delete command\nUsage: node contacts.js delete "email"`;
-      throwIfLessThan(args.length, 1, missingArgsMessage);
+      throws.throwIfLessThan(args.length, 1, missingArgsMessage);
 
       const parsedData = CommandService.handleLoad();
       const email = parser.parseDelete(args);
@@ -36,22 +32,20 @@ try {
     }
     case "search": {
       const missingArgsMessage = `Missing arguments for delete command\nUsage: node contacts.js search "name"`;
-      throwIfLessThan(args.length, 1, missingArgsMessage);
+      throws.throwIfLessThan(args.length, 1, missingArgsMessage);
 
       const parsedData = CommandService.handleLoad();
       const query = parser.parseSearch(args);
-
-      const contacts = CommandService.handleSearch(query, parsedData);
-      view.printSearch(contacts);
+      CommandService.handleSearch(query, parsedData);
       break;
     }
     case "list": {
       const contacts = CommandService.handleLoad();
-      view.printList(contacts);
+      CommandService.handleList(contacts);
       break;
     }
     case "help": {
-      view.printHelp();
+      CommandService.handleHelp();
       break;
     }
     default: {
@@ -60,5 +54,5 @@ try {
     }
   }
 } catch (error) {
-  view.printError(error);
+  commandService.handleError(error);
 }
