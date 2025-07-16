@@ -43,17 +43,19 @@ const printContacts = (contacts) => {
 };
 
 const printList = (contacts) => {
+  if (!contacts.length) {
+    return;
+  }
   console.log("=== All Contacts ===");
   printContacts(contacts);
 };
 
 const printSearch = (query, contacts) => {
   console.log(`=== Search Results for "${query}" ===`);
-  if (contacts) {
-    printContacts(contacts);
-  } else {
+  if (!contacts.length) {
     console.log(`No contacts found matching "${query}"`);
   }
+  printContacts(contacts);
 };
 
 const printNoEmailFound = (email) =>
