@@ -1,9 +1,11 @@
 import parser from "./utils/validation";
 import view from "./commands/commandHandler";
-import model from "./services/contactService";
+import ContactService from "./services/contactService";
 import { throwIfLessThan } from "./utils/throws";
 
 const FILENAME = "../DB/contacts.json";
+const model = new ContactService(FILENAME);
+
 const command = process.argv[2];
 const args = process.argv.slice(3);
 
