@@ -4,18 +4,16 @@ const contactsUtils = require('../utils/contactsUtils');
 const fs = require('node:fs');
 class ContactService {
 
-    // !!!!!!! send to add and delete the db file-name or save in this file
-
-    load(fileName) {
-        const json = filesUtils.readFromFile(fileName);
-        if (!json) filesUtils.overwriteFile(fileName, '[]');
+    load() {
+        const json = filesUtils.readFromFile();
+        if (!json) filesUtils.overwriteFile('[]');
         const parsedData = jsonUtils.JSONToObjectArray(json || '[]');
         return { parsedData, createdNewArr: !!json };
     }
 
-    save(fileName, parsedData) {
+    save(parsedData) {
         const json = jsonUtils.ObjectArrayToJSON(parsedData);
-        filesUtils.overwriteFile(fileName, json);
+        filesUtils.overwriteFile(json);
     }
 
     // error handling:
@@ -36,7 +34,7 @@ class ContactService {
         let contactsMap = contactsUtils.objectArrayToMap(parsedData);
         const contactToDelete = contactsMap.get(email);
         if (!contactToDelete)
-             throw new Error("✗ Error: No contact found with email: " + email);
+            throw new Error("✗ Error: No contact found with email: " + email);
         const updatedData = contactsUtils.mapToObjectArray(contactsMap);
         return [contactToDelete.name, updatedData]; // on success - return contact name and contacts length
     }
@@ -52,17 +50,5 @@ class ContactService {
     }
 
 }
-const contactService = new ContactService()
 
-const data = contactService.load();
-
-// let contact = ['jonah hess', 'aaa', '123345'];
-// let res = contactService.add(contact);
-// console.log(res);
-// console.log(contactService.list());
-// console.log(contactService.search('glikm'));
-// let deleted = contactService.delete('aaa');
-// console.log(deleted);
-
-
-// export default ContactService();
+export default ContactService();
