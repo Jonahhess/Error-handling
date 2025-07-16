@@ -16,4 +16,4 @@ const throwIfLessThan = (a, b, errorMsg) => {
   }
 };
 
-module.exports = { throwIfNotEqual, throwIfNaN, throwIfLessThan };
+export default { throwIfNotEqual, throwIfNaN, throwIfLessThan };
