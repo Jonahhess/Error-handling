@@ -1,5 +1,6 @@
-const fs = require("node:fs");
-const PATH = "../DB/contacts.json";
+import fs from "node:fs";
+// const PATH = "../DB/contacts.json";
+const PATH = "../DB/test.json";
 
 const readFromFile = () => {
     let data;
@@ -33,4 +34,4 @@ const overwriteFile = (data) => {
     }
 };
 
-module.exports = { readFromFile, appendToFile, overwriteFile };
+export default { readFromFile, appendToFile, overwriteFile };
