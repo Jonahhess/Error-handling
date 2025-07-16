@@ -20,7 +20,10 @@ try {
         phone,
         parsedData
       );
-      CommandService.handleSave(updatedData);
+
+      if (updatedData) {
+        CommandService.handleSave(updatedData);
+      }
       break;
     }
     case "delete": {
@@ -30,8 +33,13 @@ try {
       const parsedData = CommandService.handleLoad();
       const email = parser.parseDelete(args);
 
-      const updatedData = CommandService.handleDelete(email, parsedData);
-      CommandService.handleSave(updatedData);
+      const [updatedData, deletedName] = CommandService.handleDelete(
+        email,
+        parsedData
+      );
+      if (deletedName) {
+        CommandService.handleSave(updatedData);
+      }
       break;
     }
     case "search": {
