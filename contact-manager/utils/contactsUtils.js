@@ -18,4 +18,4 @@ const objectArrayToMap = (objArr) => {
 
 const mapToObjectArray = (map) => Array.from(map.values());;
 
-module.exports = { findAllContactsByName, objectArrayToMap, mapToObjectArray };
+export default { findAllContactsByName, objectArrayToMap, mapToObjectArray };
