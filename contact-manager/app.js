@@ -15,7 +15,7 @@ try {
       const missingArgsMessage = `Missing arguments for add command\nUsage: node contacts.js add "name" "email" "phone"`;
       throwIfLessThan(args.length, 3, missingArgsMessage);
 
-      const parsedData = handleLoad(FILENAME);
+      const parsedData = handleLoad();
       const [name, email, phone] = parser.parseAdd(args);
 
       const updatedData = handleAdd(name, email, phone, parsedData);
@@ -26,7 +26,7 @@ try {
       const missingArgsMessage = `Missing arguments for delete command\nUsage: node contacts.js delete "email"`;
       throwIfLessThan(args.length, 1, missingArgsMessage);
 
-      const parsedData = handleLoad(FILENAME);
+      const parsedData = handleLoad();
       const email = parser.parseDelete(args);
 
       const updatedData = handleDelete(email, parsedData);
@@ -37,7 +37,7 @@ try {
       const missingArgsMessage = `Missing arguments for delete command\nUsage: node contacts.js search "name"`;
       throwIfLessThan(args.length, 1, missingArgsMessage);
 
-      const parsedData = handleLoad(FILENAME);
+      const parsedData = handleLoad();
       const query = parser.parseSearch(args);
 
       const contacts = handleSearch(query, parsedData);
@@ -45,7 +45,7 @@ try {
       break;
     }
     case "list": {
-      const contacts = handleLoad(FILENAME);
+      const contacts = handleLoad();
       view.printList(contacts);
       break;
     }
@@ -88,16 +88,16 @@ function handleSearch(query, parsedData) {
   return contacts;
 }
 
-function handleLoad(FILENAME) {
+function handleLoad() {
   view.printLoading();
   let parsedData;
   try {
-    parsedData = model.load(FILENAME);
+    parsedData = model.load();
     view.printLoaded(data.length);
   } catch (error) {
     console.error(error);
     view.printFileNotFound();
-    model.createFile(FILENAME); // instead of throwing, we gracefully correct the program
+    model.createFile(); // instead of throwing, we gracefully correct the program
   }
   return parsedData;
 }
