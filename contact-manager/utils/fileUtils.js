@@ -1,4 +1,8 @@
-import fs from "fs";
+// ES6 import/export (keep for reference):
+// import fs from "fs";
+// export default { readFromFile, overwriteFile };
+
+const fs = require("fs");
 const PATH = "../contacts.json";
 
 const readFromFile = () => {
@@ -15,4 +19,5 @@ const overwriteFile = (data) => {
   }
 };
 
-export default { readFromFile, overwriteFile };
+// CommonJS export:
+module.exports = { readFromFile, overwriteFile };

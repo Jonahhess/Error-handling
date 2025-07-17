@@ -1,3 +1,6 @@
+// ES6 export (keep for reference):
+// export default { parseAdd, parseDelete, parseSearch };
+
 const validateName = (name) => {
   if (!name) {
     throw new Error("Invalid name");
@@ -59,4 +62,5 @@ const parseSearch = (args) => {
   return query.toLowerCase();
 };
 
-export default { parseAdd, parseDelete, parseSearch };
+// CommonJS export:
+module.exports = { parseAdd, parseDelete, parseSearch };
