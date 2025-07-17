@@ -7,6 +7,7 @@ const JSONToObjectArray = (json) => {
     throw err;
   }
 };
+
 const ObjectArrayToJSON = (objectArray) => {
   try {
     const stringifiedObjectArray = JSON.stringify(objectArray);
@@ -17,4 +18,8 @@ const ObjectArrayToJSON = (objectArray) => {
   }
 };
 
-export default { JSONToObjectArray, ObjectArrayToJSON };
+// ES6 export (keep for reference):
+// export default { JSONToObjectArray, ObjectArrayToJSON };
+
+// CommonJS export:
+module.exports = { JSONToObjectArray, ObjectArrayToJSON };

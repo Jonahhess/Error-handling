@@ -1,10 +1,10 @@
-// change to the better version
-const findAllContactsByName = (contacts, query) =>
-  //
-  {
-    const queryArr = query.split(" ");
-    return contacts.filter((c) => queryArr.every((q) => c.name.includes(q)));
-  };
+// ES6 import/export (keep for reference):
+// export default { findAllContactsByName, objectArrayToMap, mapToObjectArray };
+
+const findAllContactsByName = (contacts, query) => {
+  const queryArr = query.split(" ");
+  return contacts.filter((c) => queryArr.every((q) => c.name.includes(q)));
+};
 
 const objectArrayToMap = (objArr) => {
   const map = new Map();
@@ -16,4 +16,5 @@ const objectArrayToMap = (objArr) => {
 
 const mapToObjectArray = (map) => Array.from(map.values());
 
-export default { findAllContactsByName, objectArrayToMap, mapToObjectArray };
+// CommonJS export:
+module.exports = { findAllContactsByName, objectArrayToMap, mapToObjectArray };
