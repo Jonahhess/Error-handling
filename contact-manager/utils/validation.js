@@ -52,6 +52,9 @@ const parseDelete = (args) => {
   return email.toLowerCase();
 };
 const parseSearch = (args) => {
+  if (!Array.isArray(args)) {
+    throw new Error("not an array");
+  }
   const [query] = args;
   try {
     validateQuery(query);
