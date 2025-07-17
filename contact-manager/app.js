@@ -1,70 +1,73 @@
-import parser from "./utils/validation.js";
-import throws from "./utils/throws.js";
-import CommandService from "./services/commandService.js";
+// import parser from "./utils/validation.js";
+// import throws from "./utils/throws.js";
+// import CommandService from "./services/commandService.js";
+const parser = require("./utils/validation.js");
+const throws = require("./utils/throws.js");
+const CommandService = require("./services/commandService.js");
 
 const command = process.argv[2];
 const args = process.argv.slice(3);
 
 try {
-  switch (command) {
-    case "add": {
-      const missingArgsMessage = `Missing arguments for add command\nUsage: node contacts.js add "name" "email" "phone"`;
-      throws.throwIfLessThan(args.length, 3, missingArgsMessage);
+    switch (command) {
+        case "add": {
+            const missingArgsMessage = `Missing arguments for add command\nUsage: node contacts.js add "name" "email" "phone"`;
+            throws.throwIfLessThan(args.length, 3, missingArgsMessage);
 
-      const parsedData = CommandService.handleLoad();
-      const [name, email, phone] = parser.parseAdd(args);
+            const parsedData = CommandService.handleLoad();
+            const [name, email, phone] = parser.parseAdd(args);
 
-      const updatedData = CommandService.handleAdd(
-        name,
-        email,
-        phone,
-        parsedData
-      );
+            const updatedData = CommandService.handleAdd(
+                name,
+                email,
+                phone,
+                parsedData
+            );
 
-      if (updatedData) {
-        CommandService.handleSave(updatedData);
-      }
-      break;
-    }
-    case "delete": {
-      const missingArgsMessage = `Missing arguments for delete command\nUsage: node contacts.js delete "email"`;
-      throws.throwIfLessThan(args.length, 1, missingArgsMessage);
+            if (updatedData) {
+                CommandService.handleSave(updatedData);
+            }
+            break;
+        }
+        case "delete": {
+            const missingArgsMessage = `Missing arguments for delete command\nUsage: node contacts.js delete "email"`;
+            throws.throwIfLessThan(args.length, 1, missingArgsMessage);
 
-      const parsedData = CommandService.handleLoad();
-      const email = parser.parseDelete(args);
+            const parsedData = CommandService.handleLoad();
+            const email = parser.parseDelete(args);
 
-      const [updatedData, deletedName] = CommandService.handleDelete(
-        email,
-        parsedData
-      );
-      if (deletedName) {
-        CommandService.handleSave(updatedData);
-      }
-      break;
-    }
-    case "search": {
-      const missingArgsMessage = `Missing arguments for delete command\nUsage: node contacts.js search "name"`;
-      throws.throwIfLessThan(args.length, 1, missingArgsMessage);
+            const [updatedData, deletedName] = CommandService.handleDelete(
+                email,
+                parsedData
+            );
+            if (deletedName) {
+                CommandService.handleSave(updatedData);
+            }
+            break;
+        }
+        case "search": {
+            const missingArgsMessage = `Missing arguments for delete command\nUsage: node contacts.js search "name"`;
+            throws.throwIfLessThan(args.length, 1, missingArgsMessage);
 
-      const parsedData = CommandService.handleLoad();
-      const query = parser.parseSearch(args);
-      CommandService.handleSearch(query, parsedData);
-      break;
+            const parsedData = CommandService.handleLoad();
+            const query = parser.parseSearch(args);
+            CommandService.handleSearch(query, parsedData);
+            break;
+        }
+        case "list": {
+            const contacts = CommandService.handleLoad();
+            CommandService.handleList(contacts);
+            break;
+        }
+        case "help": {
+            CommandService.handleHelp();
+            break;
+        }
+        default: {
+            const invalidCommandMessage = `Unknown command '${command}'\nUsage: node contacts.js [add|list|search|delete|help]`;
+            throw new Error(invalidCommandMessage);
+        }
     }
-    case "list": {
-      const contacts = CommandService.handleLoad();
-      CommandService.handleList(contacts);
-      break;
-    }
-    case "help": {
-      CommandService.handleHelp();
-      break;
-    }
-    default: {
-      const invalidCommandMessage = `Unknown command '${command}'\nUsage: node contacts.js [add|list|search|delete|help]`;
-      throw new Error(invalidCommandMessage);
-    }
-  }
 } catch (error) {
-  CommandService.handleError(error);
+    CommandService.handleError(error);
 }
